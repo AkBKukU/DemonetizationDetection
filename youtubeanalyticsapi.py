@@ -9,6 +9,7 @@ class YTAnalytics(GoogleAPIBase):
         estimatedRevenue = "estimatedRevenue"
         estimatedMinutesWatched="estimatedMinutesWatched"
         monetizedPlaybacks = "monetizedPlaybacks"
+        views = "views"
 
     m  = None
 
@@ -43,6 +44,31 @@ class YTAnalytics(GoogleAPIBase):
             start_date=start.strftime("%Y-%m-%d"),
             end_date=end.strftime("%Y-%m-%d")
             ).execute()
+
+    def get_monetizedPlaybacks(self,start,end=None,video_id=None):
+        if end == None:
+            end = start
+
+        result = self.execute_query(start,end,self.m.monetizedPlaybacks,video_id)
+
+        for row in result.get("rows", []):
+            for value in row:
+                return value
+
+        return -1
+
+
+    def get_views(self,start,end=None,video_id=None):
+        if end == None:
+            end = start
+
+        result = self.execute_query(start,end,self.m.views,video_id)
+
+        for row in result.get("rows", []):
+            for value in row:
+                return value
+
+        return -1
 
 
     def get_revenue(self,start,end=None,video_id=None):
