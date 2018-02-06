@@ -48,7 +48,8 @@ class YTData(GoogleAPIBase):
                 video_ids.append([ 
                     video.get("id").get("videoId") ,
                     video.get("snippet", []).get("title"),
-                    video.get("snippet", []).get("publishedAt")
+                    video.get("snippet", []).get("publishedAt"),
+                    [],[]
                 ])
 
             if len(result.get("items", [])) < max_results or max_loops == 0:
