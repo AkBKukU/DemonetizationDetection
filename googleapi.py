@@ -46,7 +46,7 @@ class GoogleAPIBase():
 
     def get_service(self):
         flow = OAuth2WebServerFlow(client_id=self.client_id,
-            client_secret=self.client_id,           
+            client_secret=self.client_secret,           
             scope=self.scope,
             redirect_uri="http://localhost"
         )
