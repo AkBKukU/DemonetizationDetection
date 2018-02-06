@@ -6,7 +6,9 @@ from googleapi import GoogleAPIBase
 class YTAnalytics(GoogleAPIBase):
 
     class Metrics:
+        estimatedRevenue = "estimatedRevenue"
         estimatedMinutesWatched="estimatedMinutesWatched"
+        monetizedPlaybacks = "monetizedPlaybacks"
 
     m  = None
 
@@ -26,13 +28,32 @@ class YTAnalytics(GoogleAPIBase):
         self.channel_id = channel_id
 
 
-    def execute_query(self,start,end,metrics):
+    def execute_query(self,start,end,metrics,video_id=None):
+        if video_id == None:
+            filters = ""
+        else:
+            filters = "video==" + video_id
+
         return self.service.reports().query(
             ids="channel=="+self.channel_id,
+            filters=filters,
             metrics=metrics,
             start_date=start.strftime("%Y-%m-%d"),
             end_date=end.strftime("%Y-%m-%d")
             ).execute()
+
+
+    def get_revenue(self,start,end=None,video_id=None):
+        if end == None:
+            end = start
+
+        result = self.execute_query(start,end,self.m.estimatedRevenue)
+
+        for row in result.get("rows", []):
+            for value in row:
+                return value
+
+        return -1
 
 
     def get_watchtime(self,start,end=None):
