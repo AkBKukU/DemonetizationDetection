@@ -28,8 +28,7 @@ class YTData(GoogleAPIBase):
         end_of_videos = False
         video_ids = []
         timestamp = str(datetime.utcnow().replace(microsecond=0).isoformat())+"Z"
-#        timestamp = "2011-07-10T20:35:40.000Z"
-        max_results = 5
+        max_results = 50
         max_loops = 10
 
         while not end_of_videos:
