@@ -42,7 +42,7 @@ class GoogleAPIBase():
         self.scope = scope
     
     def set_storage(self,storage):
-        self.storage = storage
+        self.storage_file = storage
 
     def get_service(self):
         flow = OAuth2WebServerFlow(client_id=self.client_id,

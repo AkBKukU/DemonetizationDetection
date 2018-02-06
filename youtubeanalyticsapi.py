@@ -23,7 +23,7 @@ class YTAnalytics(GoogleAPIBase):
                 "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
         )
         self.m = self.Metrics() 
-        self.set_storage()
+        self.set_storage("./analytics_token.json")
 
 
     def set_channel_id(self,channel_id):
