@@ -61,26 +61,15 @@ yta.set_channel_id(api.channel_id)
 yta.set_client(api.get_client_id(),api.get_client_secret())
 yta.connect()
 
-videos = [ 
-   [ "p5o6NQmEA-8","floppy","" ,[],[]],
-   [ "GAk2YT8NwCc","changer","",[],[] ],
-   [ "W3RhGGFiDt8","mic","" ,[],[]], 
-   [ "C_XdrXjYqGE", "tek","",[],[] ]
-]
+for video in videos:
+    video.append([])
+    for day in list(reversed(range(1,days))):
+        video[-1].append(yta.get_views(date.today()-timedelta(day),video_id=video[0]))
 
 for video in videos:
-    for day in days:
-        video[3].append(yta.get_views(date.today()-timedelta(day),video_id=video[0]))
-
-for video in videos:
-    for day in days:
-        video[4].append(yta.get_monetizedPlaybacks(date.today()-timedelta(day),video_id=video[0]))
-
-videos = [['p5o6NQmEA-8', 'floppy', '', [4.0, 3.0, 12.0], [2.0, 0.0, 0.0]],
-         ['GAk2YT8NwCc', 'changer', '', [7.0, 12.0, 4.0], [6.0, 3.0, 4.0]],
-          ['W3RhGGFiDt8', 'mic', '', [0.0, 77.0, 4.0], [0.0, 25.0, 3.0]],
-           ['C_XdrXjYqGE', 'tek', '', [13.0, 11.0, 3.0], [0.0, 6.0, 0.0]]]
-
+    video.append([])
+    for day in list(reversed(range(1,days))):
+        video[-1].append(yta.get_monetizedPlaybacks(date.today()-timedelta(day),video_id=video[0]))
 
 
 monetized_ratio(videos)
@@ -93,5 +82,4 @@ for bv in bad_videos:
 
 
 
-#pprint(videos)
 

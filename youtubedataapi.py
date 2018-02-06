@@ -43,13 +43,11 @@ class YTData(GoogleAPIBase):
                     publishedBefore = timestamp
                 ).execute()
 
-            pprint(result)
             for video in result.get("items", []):
                 video_ids.append([ 
                     video.get("id").get("videoId") ,
                     video.get("snippet", []).get("title"),
                     video.get("snippet", []).get("publishedAt"),
-                    [],[]
                 ])
 
             if len(result.get("items", [])) < max_results or max_loops == 0:
