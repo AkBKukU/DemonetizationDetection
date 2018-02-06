@@ -19,9 +19,11 @@ class YTAnalytics(GoogleAPIBase):
         self.set_api(
                 name = "youtubeAnalytics",
                 version = "v1",
-                scope = "https://www.googleapis.com/auth/yt-analytics.readonly"
+                scope = "https://www.googleapis.com/auth/yt-analytics.readonly " + \
+                "https://www.googleapis.com/auth/yt-analytics-monetary.readonly"
         )
-        self.m = self.Metrics()
+        self.m = self.Metrics() 
+        self.set_storage()
 
 
     def set_channel_id(self,channel_id):
@@ -47,7 +49,7 @@ class YTAnalytics(GoogleAPIBase):
         if end == None:
             end = start
 
-        result = self.execute_query(start,end,self.m.estimatedRevenue)
+        result = self.execute_query(start,end,self.m.estimatedRevenue,video_id)
 
         for row in result.get("rows", []):
             for value in row:
