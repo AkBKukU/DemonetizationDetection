@@ -51,7 +51,7 @@ program.
 Just run `detect.py` and it will ask you to login to Youtube twice to get access
 to the API services. The program uses Oauth2 to login and save your credentials
 so you don't have to log back in every time(saved as the `*_token.json` files).
-After than it should collect a list of all videos, get the view data, and output
+After that it should collect a list of all videos, get the view data, and output
 a list of video names with links to the edit pages that were below the threshold
 .
 
