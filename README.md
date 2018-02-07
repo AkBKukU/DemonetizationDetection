@@ -28,9 +28,9 @@ considered typical. Setting this higher may trigger false positives and setting
 it lower will make it less likely to be flaged.
 
 ## My Youtube Experience as it relates to this
-I get around 300 daily views on youtube. That's not a lot of data to work with 
-for this detection method. So I can't say how well this is going to scale up to 
-larger channels.
+On [my Youtube channel](https://www.youtube.com/AkBKukU) I get around 300 daily 
+views. That's not a lot of data to work with for this detection method. So I 
+can't say how well this is going to scale up to larger channels.
 
 ## Installation
 
@@ -38,6 +38,10 @@ You will need python 3 and the google api installed. You will also need to get
 a Google API key to access the Youtube API servers. Once you have a `client_id`
 and `client_secret` to put in the `apikey.py` file and add your channel id (it's
 the non-custom version of your channel url link) you should be ready.
+
+The code is written in python and is compatible with Windows, Mac, and Linux.
+I'll have more detailed installation instructions as I continue to improve the 
+program.
 
 ## Usage
 Just run `detect.py` and it will ask you to login to Youtube twice to get access
@@ -47,4 +51,65 @@ After than it should collect a list of all videos, get the view data, and output
 a list of video names with links to the edit pages that were below the threshold
 .
 
+## Output
 
+When run the program will not initially output anything. It takes a while to 
+collect all the data from the API servers. For me it takes about 30s to run with
+3 days worth of data. Once it has received all the data and processed it, it
+will output the name of the video, the percentage of monetized playbacks, and
+a link to go directly to the Creator Studio edit page for that video.
+
+Here is an example of what that output looks like when I run it against my own 
+channel. (Note, these are *all* false positives because I do not get enough 
+views for this to work properly.)
+```
+$ ./detect.py
+Video "Python Youtube Demonetization Detector" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=FCObiesnPRM
+Video "Tektronix Type 503 Oscilliscope a Recent Acquisition" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=C_XdrXjYqGE
+Video "Prototyping Inline Volume Controls V2 LIVE pt1" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=ki9X1qRimMw
+Video "Prototyping Inline Volume Controls V2 LIVE pt2" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=v7RDmFpYw0Y
+Video "Big Box PC Game Collecting/Shipping Pains" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=I0leGSxS3Ic
+Video "Hello" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=JtVpXpxSdqk
+Video "0x0017 - MDR-7506 Driver Replacement" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=7zNz5HaaezU
+Video "0x0014[Extra] - Gigabit Powerline Adapter Not Even Close" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=VY7W7wdi8IA
+Video "0x0010 - IDE CD Changer" is at 8.333333333333332% monetized views
+https://www.youtube.com/edit?o=U&video_id=PeHOT2FCPNg
+Video "0x0012.1 - Canon BJC-85 Portable Printer" is at 8.928571428571429% monetized views
+https://www.youtube.com/edit?o=U&video_id=t80PduF9BAM
+Video "0x0003 - Tiva Module Assembly" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=TF_MkvHy8tE
+Video "0x000B- TView Presocard: Windows 95 Composite Video" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=aB3dHzgZQ-4
+Video "0x000A - DE-5000 ESR Meter Diode Replacement" is at 8.333333333333332% monetized views
+https://www.youtube.com/edit?o=U&video_id=pkbOTBbFplo
+Video "0x0007 - USB Commodore PET Keyboard" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=FfIFVg9cpUY
+Video "0x0004 - MATRIX on Commodore PET" is at 0.0% monetized views
+https://www.youtube.com/edit?o=U&video_id=CiNxjIW1DTo
+```
+
+## Roadmap
+This is program is function but not complete. I still have several more features
+to add to it:
+
+ - Confidence value: If views are too low to be sure this would be low as well
+ - Better structured output: Using confidence values to sort into "likely" and 
+	"unlikely" categories 
+
+After I get those done I will start working on a version with a GUI and a local 
+database. That should will improve general usability and drastically reduce the
+time needed to check the videos.
+
+At this point I don't plan on making a service out of this functionality. It
+would be possible to setup a server with a web login that let's people add their
+youtube accounts and be notified when a video has been demonetized. There would 
+also be a recurring cost of server time so I would need to find a way to fund 
+it. If this garners enough interest I can look into setting this up.
