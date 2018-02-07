@@ -12,8 +12,8 @@ This cannot tell you if a video has *just* been demonetized. It needs some data
 from the Youtube API. The time it takes for new analytics data to show up in the
 Creator Studio is the same as when it shows up in the API . It also does not 
 currently have any kind of notification system in place to alert you. It must be
-run manually. It will also not work well for channels that don't consistently 
-get monetized views.
+run manually. It will not work well for channels with consistently low amounts
+of monetized views.
 
 ## Theory
 Using the number views that a video has recently got with the number of 
