@@ -32,7 +32,6 @@ class GoogleAPIBase():
 
     credentials = None
     scopes = []
-    scopes_added = False
 
 
     def set_client(self,client_id,client_secret):
@@ -51,8 +50,7 @@ class GoogleAPIBase():
 
     def add_scope(self,scope):
         GoogleAPIBase.scopes.append(scope)
-        GoogleAPIBase.scopes_added = True
-        print("Added scope: " + scope)
+        GoogleAPIBase.credentials = None
 
 
     def build_scope(self):
@@ -74,16 +72,13 @@ class GoogleAPIBase():
         GoogleAPIBase.credentials = storage.get()
 
         if GoogleAPIBase.credentials is None or \
-                GoogleAPIBase.credentials.invalid or \
-                GoogleAPIBase.scopes_added:
+                GoogleAPIBase.credentials.invalid:
             flags = argparser.parse_args(args=[])
             GoogleAPIBase.credentials = run_flow(flow, storage, flags)
 
-        GoogleAPIBase.scopes_added = False
 
     def get_service(self):
-        if GoogleAPIBase.credentials is None or GoogleAPIBase.scopes_added:
-            print("Logging in: " + self.api_name)
+        if GoogleAPIBase.credentials is None:
             self.login()
         return build(self.api_name,self.api_version,
             http=GoogleAPIBase.credentials.authorize(httplib2.Http()))
