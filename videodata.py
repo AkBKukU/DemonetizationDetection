@@ -1,9 +1,19 @@
 #!/usr/bin/python
 
 class VideoData():
+    
+    # Standard Data
+    video_id = None
+    title = None
+    description = None
+    published = None
 
-    views = 0
-    monetizedPlaybacks = 0
-    estimatedRevenue = 0.0
-    estimatedMinutesWatched = 0
+    # Metrics
+    date_start = None
+    date_end = None
+    views = []
+    monetizedPlaybacks = []
+    estimatedRevenue = []
+    estimatedMinutesWatched = []
+    
 

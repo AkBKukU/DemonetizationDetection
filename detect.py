@@ -50,12 +50,12 @@ def determine_demonetized(videos,threshold):
 api = GoogleAPIKey()
 ytd = YTData()
 ytd.set_client(api.get_client_id(),api.get_client_secret())
-ytd.connect()
 
 yta = YTAnalytics()
 yta.set_client(api.get_client_id(),api.get_client_secret())
 
 # Connect APIs
+ytd.connect()
 yta.connect()
 
 ytd.set_channel_id(api.channel_id)
