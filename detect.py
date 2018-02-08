@@ -48,6 +48,7 @@ yta.connect()
 ytd.set_channel_id(api.channel_id)
 
 videos = ytd.get_video_list()
+#videos = [["dFnvu3tRLoo","SOBAX",""]]
 
 # Connect to youtube api
 yta.set_channel_id(api.channel_id)
@@ -62,6 +63,8 @@ for video in videos:
 monetized_ratio(videos)
 
 bad_videos = determine_demonetized(videos,threshold)
+
+pprint(videos)
 
 for bv in bad_videos:
     print("Video \"" + bv[1] + "\" is at " + str(bv[5]*100) + "% monetized views") 
