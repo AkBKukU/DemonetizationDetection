@@ -2,8 +2,9 @@
 
 from googleapi import GoogleAPIBase
 
-from pprint import *
 from datetime import *
+import math
+
 
 class YTData(GoogleAPIBase):
 
@@ -23,19 +24,26 @@ class YTData(GoogleAPIBase):
         self.channel_id = channel_id
 
 
-    def get_video_list(self):
+    def get_video_list(self,limit=0):
+        max_loops = 50
+        max_results = 50
+        if limit:
+            max_loops = math.floor(limit / 50)
+            max_results = limit % 50
+            print("Setting limits, loops: " + str(max_loops) + ", results: " + str(max_results))
+
+
         end_of_videos = False
         video_ids = []
         timestamp = str(datetime.utcnow().replace(microsecond=0).isoformat())+"Z"
-        max_results = 50
-        max_loops = 10
 
         while not end_of_videos:
-            max_loops = max_loops - 1
+            result_limit = max_results if not max_loops else 50
+            print("loop Values: " + str(result_limit) + "loops: " + str(max_loops))
             result = self.service.search().list(
                     part="snippet",
                     channelId=self.channel_id,
-                    maxResults=max_results,
+                    maxResults=result_limit,
                     order="date",
                     type='video',
                     publishedBefore = timestamp
@@ -48,7 +56,8 @@ class YTData(GoogleAPIBase):
                     video.get("snippet", []).get("publishedAt"),
                 ])
 
-            if len(result.get("items", [])) < max_results or max_loops == 0:
+            max_loops = max_loops - 1
+            if len(result.get("items", [])) < max_results or max_loops < 0:
                 end_of_videos = True
             else:
                 timestamp = video_ids[-1][2]

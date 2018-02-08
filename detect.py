@@ -47,7 +47,7 @@ yta.connect()
 
 ytd.set_channel_id(api.channel_id)
 
-videos = ytd.get_video_list()
+videos = ytd.get_video_list(5)
 #videos = [["dFnvu3tRLoo","SOBAX",""]]
 
 # Connect to youtube api
