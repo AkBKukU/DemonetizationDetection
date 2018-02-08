@@ -41,7 +41,7 @@ if credentials is None or credentials.invalid:
     credentials = run_flow(flow, storage, flags)
 
 ytd = build("youtube","v3", http=credentials.authorize(httplib2.Http()))
-yta = build("youtubeanalytics","v1", http=credentials.authorize(httplib2.Http()))
+yta = build("youtubeAnalytics","v1", http=credentials.authorize(httplib2.Http()))
 
 
 
