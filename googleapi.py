@@ -20,59 +20,73 @@ from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 
 class GoogleAPIBase():
-    scopes = []
 
     storage_file = "./token.json"
 
     client_id = None
     client_secret = None
+    api_name = None
+    api_version = None
     
     service = None
 
     credentials = None
+    scopes = []
+    scopes_added = False
+
 
     def set_client(self,client_id,client_secret):
-        self.client_id = client_id
-        self.client_secret = client_secret
+        GoogleAPIBase.client_id = client_id
+        GoogleAPIBase.client_secret = client_secret
 
-    def set_api(self,name,version,scope):
+
+    def set_api(self,name,version):
         self.api_name = name
         self.api_version = version
-    
+
+
     def set_storage(self,storage):
         self.storage_file = storage
 
+
     def add_scope(self,scope):
-        scopes.append(scope)
+        GoogleAPIBase.scopes.append(scope)
+        GoogleAPIBase.scopes_added = True
+        print("Added scope: " + scope)
+
 
     def build_scope(self):
         scope = ""
-        for s in self.scopes:
-            scope += s + " "
-        
+        for s in GoogleAPIBase.scopes:
+            scope += s + " "        
         return scope
+
 
     def login(self):
         flow = OAuth2WebServerFlow(client_id=self.client_id,
             client_secret=self.client_secret,           
-            scope=self.build_scope,
+            scope=self.build_scope(),
             redirect_uri="http://localhost"
         )
 
         storage = Storage(self.storage_file)
 
-        self.credentials = storage.get()
+        GoogleAPIBase.credentials = storage.get()
 
-        if self.credentials is None or self.credentials.invalid:
+        if GoogleAPIBase.credentials is None or \
+                GoogleAPIBase.credentials.invalid or \
+                GoogleAPIBase.scopes_added:
             flags = argparser.parse_args(args=[])
-            self.credentials = run_flow(flow, storage, flags)
+            GoogleAPIBase.credentials = run_flow(flow, storage, flags)
 
-    def get_service(self,name,version):
-        if not self.credentials:
+        GoogleAPIBase.scopes_added = False
+
+    def get_service(self):
+        if GoogleAPIBase.credentials is None or GoogleAPIBase.scopes_added:
+            print("Logging in: " + self.api_name)
             self.login()
-        else:
-            return build(name,version,
-                http=self.credentials.authorize(httplib2.Http()))
+        return build(self.api_name,self.api_version,
+            http=GoogleAPIBase.credentials.authorize(httplib2.Http()))
 
     def connect(self):
         self.service = self.get_service()
