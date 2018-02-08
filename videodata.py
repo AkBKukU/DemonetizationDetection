@@ -11,9 +11,10 @@ class VideoData():
     # Metrics
     date_start = None
     date_end = None
-    views = []
-    monetizedPlaybacks = []
-    estimatedRevenue = []
-    estimatedMinutesWatched = []
+    views = None
+    monetizedPlaybacks = None
+    estimatedRevenue = None
+    estimatedMinutesWatched = None
+    percent = None
     
 

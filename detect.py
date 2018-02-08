@@ -22,13 +22,13 @@ youtube_edit_link = "https://www.youtube.com/edit?o=U&video_id="
 
 def monetized_ratio(videos):
     for video in videos:
-        video.append(video[4]/video[3])
+        video.percent = video.monetizedPlaybacks/video.views
 
 
 def determine_demonetized(videos,threshold):
     bad_videos = [];
     for video in videos:
-        if video[5] < threshold:
+        if video.percent < threshold:
             bad_videos.append(video)
 
     return bad_videos
@@ -47,28 +47,31 @@ yta.connect()
 
 ytd.set_channel_id(api.channel_id)
 
-videos = ytd.get_video_list(5)
+videos = ytd.get_video_list()
 #videos = [["dFnvu3tRLoo","SOBAX",""]]
+
 
 # Connect to youtube api
 yta.set_channel_id(api.channel_id)
 
 for video in videos:
-    video.append(yta.get_views(date.today()-timedelta(days),date.today()-timedelta(1),video_id=video[0]))
+    video.views = yta.get_views(date.today()-timedelta(days),date.today()-timedelta(1),video_id=video.video_id)
 
 for video in videos:
-    video.append(yta.get_monetizedPlaybacks(date.today()-timedelta(days),date.today()-timedelta(1),video_id=video[0]))
+    video.monetizedPlaybacks = yta.get_monetizedPlaybacks(date.today()-timedelta(days),date.today()-timedelta(1),video_id=video.video_id)
 
 
 monetized_ratio(videos)
 
 bad_videos = determine_demonetized(videos,threshold)
 
-pprint(videos)
+
+#for video in videos:
+#    print(vars(video))
 
 for bv in bad_videos:
-    print("Video \"" + bv[1] + "\" is at " + str(bv[5]*100) + "% monetized views") 
-    print(youtube_edit_link + bv[0]) 
+    print("Video \"" + bv.title + "\" is at " + str(bv.percent*100) + "% monetized views") 
+    print(youtube_edit_link + bv.video_id) 
 
 
 

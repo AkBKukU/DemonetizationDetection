@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 
 from googleapi import GoogleAPIBase
+from videodata import VideoData
 
 from datetime import *
 import math
 
+from pprint import *
 
 class YTData(GoogleAPIBase):
 
@@ -34,7 +36,7 @@ class YTData(GoogleAPIBase):
 
 
         end_of_videos = False
-        video_ids = []
+        videos = []
         timestamp = str(datetime.utcnow().replace(microsecond=0).isoformat())+"Z"
 
         while not end_of_videos:
@@ -50,22 +52,23 @@ class YTData(GoogleAPIBase):
                 ).execute()
 
             for video in result.get("items", []):
-                video_ids.append([ 
-                    video.get("id").get("videoId") ,
-                    video.get("snippet", []).get("title"),
-                    video.get("snippet", []).get("publishedAt"),
-                ])
+                videos.append(VideoData())
+                videos[-1].video_id = video.get("id").get("videoId")
+                videos[-1].title =  video.get("snippet", []).get("title")
+                videos[-1].published = video.get("snippet", []).get("publishedAt")
+                
 
+            # Loop End
             max_loops = max_loops - 1
             if len(result.get("items", [])) < max_results or max_loops < 0:
                 end_of_videos = True
             else:
-                timestamp = video_ids[-1][2]
+                timestamp = videos[-1].published
                 datestamp = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
                 datestamp = datestamp - timedelta(0,1)
                 timestamp = str(datestamp.replace(microsecond=0).isoformat())+"Z"
                                 
            
-        return video_ids
+        return videos
 
 
