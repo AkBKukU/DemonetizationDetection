@@ -14,10 +14,9 @@ class YTData(GoogleAPIBase):
         self.set_api(
                 name = "youtube",
                 version = "v3",
-                scope = "https://www.googleapis.com/auth/youtube.force-ssl " + \
-                    "https://www.googleapis.com/auth/youtube.readonly"
         )
-        self.set_storage("./data_token.json")
+        self.add_scope("https://www.googleapis.com/auth/youtube.force-ssl")
+        self.add_scope("https://www.googleapis.com/auth/youtube.readonly")
 
 
     def set_channel_id(self,channel_id):
