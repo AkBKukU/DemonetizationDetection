@@ -54,6 +54,9 @@ videos = ytd.get_video_list()
 # Connect to youtube api
 yta.set_channel_id(api.channel_id)
 
+#for video in videos:
+#    pprint(yta.execute_query(date.today()-timedelta(days),date.today()-timedelta(1),"views,monetizedPlaybacks",video_id=video.video_id))
+
 for video in videos:
     video.views = yta.get_views(date.today()-timedelta(days),date.today()-timedelta(1),video_id=video.video_id)
 
