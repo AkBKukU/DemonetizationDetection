@@ -32,7 +32,6 @@ class YTData(GoogleAPIBase):
         if limit:
             max_loops = math.floor(limit / 50)
             max_results = limit % 50
-            print("Setting limits, loops: " + str(max_loops) + ", results: " + str(max_results))
 
 
         end_of_videos = False
@@ -41,7 +40,6 @@ class YTData(GoogleAPIBase):
 
         while not end_of_videos:
             result_limit = max_results if not max_loops else 50
-            print("loop Values: " + str(result_limit) + "loops: " + str(max_loops))
             result = self.service.search().list(
                     part="snippet",
                     channelId=self.channel_id,
