@@ -92,8 +92,8 @@ I did not monetize the video "Channel Updates" to test this. It got 178 views
 the previous day but none were monetized. So it gets a high confidence rating.
 
 In this case the low confidence values are all false positives because I do not 
-get enough views for this to work properly. (this is pretty all my videos so I
-cut it short for the example)
+get enough views for this to work properly. (this is pretty much all my videos 
+so I cut it short for the example)
 
 ## Roadmap
 This is program is functional but not complete. I still have several more 
