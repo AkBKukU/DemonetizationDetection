@@ -15,11 +15,10 @@ from videodata import VideoData
 def determine_demonetized(videos,threshold):
     bad_videos = [[],[],[]];
     for video in videos:
-        video.confidence = video.views / views_for_confidence
         if video.percent < threshold:
-            if video.confidence > 1.0:
+            if video.percent_confidence > 1.0:
                 bad_videos[0].append(video)
-            elif video.confidence > 0.5:
+            elif video.percent_confidence > 0.5:
                 bad_videos[1].append(video)
             else:
                 bad_videos[2].append(video)
@@ -33,8 +32,10 @@ def print_video(video):
 m = YTAnalytics.Metrics()
 
 views_for_confidence = 25
-days = 2
+days = 4
 threshold = 0.1
+
+VideoData.percent_confidence_limit = views_for_confidence
 
 youtube_edit_link = "https://www.youtube.com/edit?o=U&video_id="
 
