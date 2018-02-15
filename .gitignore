@@ -1,3 +1,4 @@
 *token.json
 *.swp
 __pycache__
+*.pyc
