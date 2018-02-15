@@ -51,7 +51,7 @@ class YTData(GoogleAPIBase):
 
             for video in result.get("items", []):
                 videos.append(VideoData())
-                videos[-1].video_id = video.get("id").get("videoId")
+                videos[-1].id = video.get("id").get("videoId")
                 videos[-1].title =  video.get("snippet", []).get("title")
                 videos[-1].published = video.get("snippet", []).get("publishedAt")
                 
