@@ -22,12 +22,16 @@ has been shut off. This is implemented in this python code base by using the
 Youtube Data and Analyics APIs to get data associated with your youtube account.
 
 ## Notes about the code
-There are two values at the top of `detect.py` that can be changed to get better
-results based on your channel. The `days` variable is how many days back worth 
-of data the program requests from the server. This is averaged to get one result
-. The `threshold` value is the minimum percentage of monetized views to be 
-considered typical. Setting this higher may trigger false positives and setting 
-it lower will make it less likely to flag videos.
+There are three values at the top of `detect.py` that can be changed to get 
+better results based on your channel. 
+
+ - `days`: Is how many days back worth of data the program requests from the 
+     server. This is averaged to get one result. 
+ - `threshold`: Is the minimum percentage of monetized views to be considered 
+     typical. Setting this higher may trigger false positives and setting it 
+     lower will make it less likely to flag videos. 
+ - `views_for_confidence`: Is the number of views a video needs to have for a 
+     high level of confidence that it is demonetized.
 
 ## My Youtube Experience as it relates to this
 On [my Youtube channel](https://www.youtube.com/AkBKukU) I get around 300 daily 
@@ -60,57 +64,47 @@ list of video names with links to the edit pages that were below the threshold.
 When run the program will not initially output anything. It takes a while to 
 collect all the data from the API servers. For me it takes about 9s to run with
 3 days worth of data. Once it has received all the data and processed it, it
-will output the name of the video, the percentage of monetized playbacks, and
-a link to go directly to the Creator Studio edit page for that video.
+will output confidence headers, the name of the video, the percentage of 
+monetized playbacks, and a link to go directly to the Creator Studio edit page 
+for that video.
 
 Here is an example of what that output looks like when I run it against my own 
-channel. (Note, these are *all* false positives because I do not get enough 
-views for this to work properly.)
+channel. 
 ```
 $ ./detect.py
-Video "Python Youtube Demonetization Detector" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=FCObiesnPRM
-Video "Tektronix Type 503 Oscilliscope a Recent Acquisition" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=C_XdrXjYqGE
-Video "Prototyping Inline Volume Controls V2 LIVE pt1" is at 0.0% monetized views
+
+High Confidence of Demonetiztion:
+Video "Channel Updates" is at 0% (0/178) monetized views
+https://www.youtube.com/edit?o=U&video_id=201isF9onSc
+
+Low Confidence of Demonetiztion:
+Video "0x001D - DIY LED Filming Lights" is at 0% (0/0) monetized views
+https://www.youtube.com/edit?o=U&video_id=M-1O5SR0sYY
+Video "META: My Audio Setup" is at 0% (0/0) monetized views
+https://www.youtube.com/edit?o=U&video_id=HjlQ65Ywot4
+Video "Prototyping Inline Volume Controls V2 LIVE pt1" is at 0% (0/0) monetized views
 https://www.youtube.com/edit?o=U&video_id=ki9X1qRimMw
-Video "Prototyping Inline Volume Controls V2 LIVE pt2" is at 0.0% monetized views
+Video "Prototyping Inline Volume Controls V2 LIVE pt2" is at 0% (0/1) monetized views
 https://www.youtube.com/edit?o=U&video_id=v7RDmFpYw0Y
-Video "Big Box PC Game Collecting/Shipping Pains" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=I0leGSxS3Ic
-Video "Hello" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=JtVpXpxSdqk
-Video "0x0017 - MDR-7506 Driver Replacement" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=7zNz5HaaezU
-Video "0x0014[Extra] - Gigabit Powerline Adapter Not Even Close" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=VY7W7wdi8IA
-Video "0x0010 - IDE CD Changer" is at 8.333333333333332% monetized views
-https://www.youtube.com/edit?o=U&video_id=PeHOT2FCPNg
-Video "0x0012.1 - Canon BJC-85 Portable Printer" is at 8.928571428571429% monetized views
-https://www.youtube.com/edit?o=U&video_id=t80PduF9BAM
-Video "0x0003 - Tiva Module Assembly" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=TF_MkvHy8tE
-Video "0x000B- TView Presocard: Windows 95 Composite Video" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=aB3dHzgZQ-4
-Video "0x000A - DE-5000 ESR Meter Diode Replacement" is at 8.333333333333332% monetized views
-https://www.youtube.com/edit?o=U&video_id=pkbOTBbFplo
-Video "0x0007 - USB Commodore PET Keyboard" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=FfIFVg9cpUY
-Video "0x0004 - MATRIX on Commodore PET" is at 0.0% monetized views
-https://www.youtube.com/edit?o=U&video_id=CiNxjIW1DTo
 ```
+
+I did not monetize the video "Channel Updates" to test this. It got 178 views 
+the previous day but none were monetized. So it gets a high confidence rating.
+
+In this case the low confidence values are all false positives because I do not 
+get enough views for this to work properly. (this is pretty all my videos so I
+cut it short for the example)
 
 ## Roadmap
 This is program is functional but not complete. I still have several more 
 features to add to it:
 
- - Confidence value: If views are too low to be sure this would be low as well
- - Better structured output: Using confidence values to sort into "likely" and 
-	"unlikely" categories 
+ - GUI: Because not everyone wants a grey beard
+ - Local Database: You can't upload videos in the past\*. So keep existing video
+     information locally and only check by default for videos after the newest
+     one the the DB.
 
-After I get those done I will start working on a version with a GUI and a local 
-database. That should will improve general usability and drastically reduce the
-time needed to check the videos.
+\*Streams can be a bit odd with their dates
 
 At this point I don't plan on making a service out of this functionality. It
 would be possible to setup a server with a web login that let's people add their
