@@ -13,13 +13,22 @@ from apikey import GoogleAPIKey
 from videodata import VideoData
 
 def determine_demonetized(videos,threshold):
-    bad_videos = [];
+    bad_videos = [[],[],[]];
     for video in videos:
+        video.confidence = video.views / views_for_confidence
         if video.percent < threshold:
-            bad_videos.append(video)
+            if video.confidence > 1.0:
+                bad_videos[0].append(video)
+            elif video.confidence > 0.5:
+                bad_videos[1].append(video)
+            else:
+                bad_videos[2].append(video)
 
     return bad_videos
 
+def print_video(video):
+        print("Video \"" + video.title + "\" is at " + str(video.percent*100) + "% (" + str(int(video.monetizedPlaybacks)) + "/" + str(int(video.views)) + ") monetized views") 
+        print(youtube_edit_link + video.id) 
 
 m = YTAnalytics.Metrics()
 
@@ -57,7 +66,20 @@ for video in videos:
 
 bad_videos = determine_demonetized(videos,threshold)
 
-for bv in bad_videos:
-    print("Video \"" + bv.title + "\" is at " + str(bv.percent*100) + "% monetized views") 
-    print(youtube_edit_link + bv.id) 
+if len(bad_videos[0]):
+    print("High Confidence of Demonetiztion:")
+    for bv in bad_videos[0]:
+        print_video(bv)
+    print()
 
+if len(bad_videos[1]):
+    print("Medium Confidence of Demonetiztion:")
+    for bv in bad_videos[1]:
+        print_video(bv)
+    print()
+
+if len(bad_videos[2]):
+    print("Low Confidence of Demonetiztion:")
+    for bv in bad_videos[2]:
+        print_video(bv)
+    print()
