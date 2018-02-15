@@ -23,6 +23,7 @@ def determine_demonetized(videos,threshold):
 
 m = YTAnalytics.Metrics()
 
+views_for_confidence = 25
 days = 2
 threshold = 0.1
 
