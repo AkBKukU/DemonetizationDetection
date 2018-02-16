@@ -2,6 +2,8 @@
 
 class VideoData(object):
     
+    percent_confidence_limit = 25
+
     def __init__(self):
         # Standard Data
         self._video_id = None
@@ -17,6 +19,7 @@ class VideoData(object):
         self._estimatedRevenue = None
         self._estimatedMinutesWatched = None
         self._percent = None
+        self._percent_confidence = None
    
 
     @property
@@ -103,12 +106,18 @@ class VideoData(object):
     def percent(self):
         if self._percent == None and self.views > 0:
             self._percent = self._monetizedPlaybacks / self._views
+            self._percent_confidence = self._views / self.percent_confidence_limit
         else:
             self._percent = 0
+            self._percent_confidence = 0
         return self._percent
 
     @percent.setter
     def percent(self,value):
         return self._percent
+
+    @property
+    def percent_confidence(self):
+        return self._percent_confidence
 
 
