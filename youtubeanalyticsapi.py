@@ -19,15 +19,8 @@ class YTAnalytics(GoogleAPIBase):
         views = "views", \
             VideoData.views
 
-    m = None
-
-    channel_id = None
-
     def __init__(self):
-        self.set_api(
-            name = "youtubeAnalytics",
-            version = "v1",
-        )
+        self.set_api("youtubeAnalytics","v1")
         self.add_scope("https://www.googleapis.com/auth/yt-analytics.readonly")
         self.add_scope("https://www.googleapis.com/auth/yt-analytics-monetary.readonly")
         self.m = self.Metrics()
@@ -47,14 +40,13 @@ class YTAnalytics(GoogleAPIBase):
             metrics=metrics,
             start_date=start.strftime("%Y-%m-%d"),
             end_date=end.strftime("%Y-%m-%d")
-            ).execute()
+        ).execute()
 
     def get_metrics(self, start, end, metrics, video):
         if end is None:
             end = start
 
         metricString = ""
-
         for m in metrics:
             metricString += m[0] + ","
 
@@ -63,7 +55,7 @@ class YTAnalytics(GoogleAPIBase):
         result = self.execute_query(start, end, metricString, video)
 
         for row in result.get("rows",  []):
-            for i,  value in enumerate(row):
+            for i, value in enumerate(row):
                 types.MethodType(metrics[i][1].fset, video)(value)
 
         return video
