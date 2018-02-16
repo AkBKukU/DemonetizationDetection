@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 
+
 class GoogleAPIKey():
     client_id = ""
     client_secret = ""
     channel_id = ""
-    
-    def set_client(self,client_id,client_secret):
+
+    def set_client(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
 

@@ -9,8 +9,9 @@ from youtubedataapi import YTData
 from apikey import GoogleAPIKey
 from videodata import VideoData
 
-def determine_demonetized(videos,threshold):
-    bad_videos = [[],[],[]];
+
+def determine_demonetized(videos, threshold):
+    bad_videos = [[], [], []]
     for video in videos:
         if video.percent < threshold:
             if video.percent_confidence > 1.0:
@@ -19,12 +20,18 @@ def determine_demonetized(videos,threshold):
                 bad_videos[1].append(video)
             else:
                 bad_videos[2].append(video)
-
     return bad_videos
 
+
 def print_video(video):
-        print("Video \"" + video.title + "\" is at " + str(video.percent*100) + "% (" + str(int(video.monetizedPlaybacks)) + "/" + str(int(video.views)) + ") monetized views") 
-        print(youtube_edit_link + video.id) 
+        print('Video "%s" is at %d%% (%d/%d) monetized views' % (
+            video.title,
+            video.percent*100,
+            video.monetizedPlaybacks,
+            video.views
+        ))
+        print(youtube_edit_link + video.id)
+
 
 m = YTAnalytics.Metrics()
 
@@ -39,10 +46,10 @@ youtube_edit_link = "https://www.youtube.com/edit?o=U&video_id="
 # Setup APIs
 api = GoogleAPIKey()
 ytd = YTData()
-ytd.set_client(api.get_client_id(),api.get_client_secret())
+ytd.set_client(api.get_client_id(), api.get_client_secret())
 
 yta = YTAnalytics()
-yta.set_client(api.get_client_id(),api.get_client_secret())
+yta.set_client(api.get_client_id(), api.get_client_secret())
 
 # Connect APIs
 ytd.connect()
@@ -58,11 +65,11 @@ for video in videos:
     yta.get_metrics(
             date.today()-timedelta(days),
             date.today()-timedelta(1),
-            [m.views,m.monetizedPlaybacks],
+            [m.views, m.monetizedPlaybacks],
             video
     )
 
-bad_videos = determine_demonetized(videos,threshold)
+bad_videos = determine_demonetized(videos, threshold)
 
 if len(bad_videos[0]):
     print("High Confidence of Demonetiztion:")
@@ -81,3 +88,4 @@ if len(bad_videos[2]):
     for bv in bad_videos[2]:
         print_video(bv)
     print()
+

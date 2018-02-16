@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
+
 class VideoData(object):
-    
+
     percent_confidence_limit = 25
 
     def __init__(self):
@@ -20,46 +21,45 @@ class VideoData(object):
         self._estimatedMinutesWatched = None
         self._percent = None
         self._percent_confidence = None
-   
 
     @property
     def id(self):
         return self._video_id
 
     @id.setter
-    def id(self,value):
+    def id(self, value):
         self._video_id = value
- 
+
     @property
     def title(self):
         return self._title
 
     @title.setter
-    def title(self,value):
+    def title(self, value):
         self._title = value
-   
+
     @property
     def description(self):
         return self._description
 
     @description.setter
-    def description(self,value):
+    def description(self, value):
         self._descrioption = value
-    
+
     @property
     def published(self):
         return self._published
 
     @published.setter
-    def published(self,value):
+    def published(self, value):
         self._published = value
-    
+
     @property
     def date_start(self):
         return self._date_start
 
     @date_start.setter
-    def date_start(self,value):
+    def date_start(self, value):
         self._date_start = value
 
     @property
@@ -67,7 +67,7 @@ class VideoData(object):
         return self._date_end
 
     @date_end.setter
-    def date_end(self,value):
+    def date_end(self, value):
         self._date_end = value
 
     @property
@@ -75,15 +75,15 @@ class VideoData(object):
         return self._views
 
     @views.setter
-    def views(self,value):
+    def views(self, value):
         self._views = value
- 
+
     @property
     def monetizedPlaybacks(self):
         return self._monetizedPlaybacks
 
     @monetizedPlaybacks.setter
-    def monetizedPlaybacks(self,value):
+    def monetizedPlaybacks(self, value):
         self._monetizedPlaybacks = value
 
     @property
@@ -91,7 +91,7 @@ class VideoData(object):
         return self._estimatedRevenue
 
     @estimatedRevenue.setter
-    def estimatedRevenue(self,value):
+    def estimatedRevenue(self, value):
         self._estimatedRevenue = value
 
     @property
@@ -99,21 +99,22 @@ class VideoData(object):
         return self._estimatedMinutesWatched
 
     @estimatedMinutesWatched.setter
-    def estimatedMinutesWatched(self,value):
+    def estimatedMinutesWatched(self, value):
         self._estimatedMinutesWatched = value
 
     @property
     def percent(self):
-        if self._percent == None and self.views > 0:
+        if self._percent is None and self.views > 0:
             self._percent = self._monetizedPlaybacks / self._views
-            self._percent_confidence = self._views / self.percent_confidence_limit
+            self._percent_confidence = self._views / \
+                self.percent_confidence_limit
         else:
             self._percent = 0
             self._percent_confidence = 0
         return self._percent
 
     @percent.setter
-    def percent(self,value):
+    def percent(self, value):
         return self._percent
 
     @property
