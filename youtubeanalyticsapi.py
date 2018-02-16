@@ -35,10 +35,10 @@ class YTAnalytics(GoogleAPIBase):
 
 
     def execute_query(self,start,end,metrics,video=None):
-        if video.id == None:
-            filters = ""
-        else:
+        if video:
             filters = "video==" + video.id
+        else:
+            filters = ""
         
         
         return self.service.reports().query(
