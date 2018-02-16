@@ -4,9 +4,6 @@ import sys
 from datetime import *
 from pprint import *
 
-out_of_project_files = "/home/akbkuku/.youtube/"
-
-sys.path.append("/home/akbkuku/.youtube")
 from youtubeanalyticsapi import YTAnalytics
 from youtubedataapi import YTData
 from apikey import GoogleAPIKey
